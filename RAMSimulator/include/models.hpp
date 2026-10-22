@@ -5,8 +5,9 @@
 
 // Thong tin mot vung RAM trong
 struct Hole {
-    int id = 0;             // Ma vung nho: H1, H2, H3...
-    int freeKB = 0;         // Dung luong trong (KB)
+    int id = 0;
+    int startKB = 0;
+    int freeKB = 0;
 };
 
 // Thong tin tien trinh yeu cau cap phat RAM
