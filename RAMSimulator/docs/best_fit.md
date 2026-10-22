@@ -173,6 +173,104 @@ Thuật toán cần tìm kiếm toàn bộ danh sách vùng trống nếu danh s
 
 Nội dung phân tích là cơ sở để triển khai hàm cấp phát Best Fit, xây dựng chức năng ghi lại quá trình cấp phát và thực hiện kiểm thử trong các công việc tiếp theo.
 
+## 9. Mô tả triển khai thuật toán Best Fit
+
+### 9.1. Cấu trúc dữ liệu sử dụng
+
+Thuật toán Best Fit được lập trình bằng C++17, sử dụng các cấu trúc dữ liệu chung do nhóm thống nhất trong `models.hpp` và khai báo hàm trong `allocators.hpp`.
+
+Các cấu trúc được sử dụng gồm:
+
+- `Hole`: Lưu mã vùng nhớ (`id`), địa chỉ bắt đầu (`startKB`) và dung lượng trống (`freeKB`).
+- `Request`: Lưu mã tiến trình (`pid`) và dung lượng yêu cầu (`requiredKB`).
+- `AllocationResult`: Lưu kết quả cấp phát, mã vùng được chọn, dung lượng còn lại và nguyên nhân thất bại nếu có.
+- `MemoryState`: Danh sách các vùng nhớ trống, được biểu diễn bằng `std::vector<Hole>`.
+
+### 9.2. Triển khai hàm bestFit()
+
+Hàm `bestFit()` được định nghĩa trong tệp `best_fit.cpp`, tiếp nhận trạng thái bộ nhớ và yêu cầu cấp phát của một tiến trình.
+
+Quá trình thực hiện gồm:
+
+1. Kiểm tra tính hợp lệ của mã tiến trình và dung lượng yêu cầu.
+2. Duyệt danh sách các vùng nhớ trống.
+3. Bỏ qua những vùng có dung lượng nhỏ hơn yêu cầu.
+4. Lựa chọn vùng trống nhỏ nhất đủ đáp ứng yêu cầu. Nếu nhiều vùng có cùng kích thước phù hợp, ưu tiên vùng có `startKB` nhỏ nhất.
+5. Cấp phát bộ nhớ từ đầu vùng được chọn.
+6. Cập nhật `startKB` và `freeKB` của vùng sau cấp phát.
+7. Trả về kết quả thông qua cấu trúc `AllocationResult`.
+
+Nếu không tìm thấy vùng nhớ phù hợp, hàm trả về kết quả thất bại và không làm thay đổi trạng thái bộ nhớ.
+
+Phiên bản hiện tại giữ lại bản ghi vùng nhớ khi `freeKB` bằng 0. Quy tắc quản lý bản ghi này sẽ được thống nhất với TV1 khi tích hợp.
+
+### 9.3. Triển khai chức năng hiển thị quá trình cấp phát
+
+Chức năng hiển thị được xây dựng trong tệp `trace.cpp` thông qua hàm `printBestFitTrace()`.
+
+Hàm tiếp nhận trạng thái RAM trước cấp phát, yêu cầu của tiến trình, kết quả cấp phát và trạng thái RAM sau cấp phát.
+
+Thông tin hiển thị gồm:
+
+- Mã tiến trình và dung lượng yêu cầu.
+- Danh sách các vùng RAM trước cấp phát và khả năng đáp ứng yêu cầu.
+- Vùng nhớ được thuật toán lựa chọn.
+- Khoảng địa chỉ đã cấp phát và dung lượng còn lại.
+- Trạng thái RAM sau thao tác.
+- Thông báo cấp phát thành công hoặc thất bại.
+
+Khi cấp phát thất bại, chức năng hiển thị có thể phân biệt trường hợp thiếu tổng dung lượng RAM trống và trường hợp phân mảnh ngoài dựa trên trạng thái bộ nhớ được cung cấp.
+
+Hàm hiển thị không trực tiếp thay đổi trạng thái RAM hoặc thực hiện thêm thao tác cấp phát.
+
+## 10. Kiểm thử thuật toán Best Fit và chức năng hiển thị
+
+### 10.1. Phương pháp kiểm thử
+
+Các mô-đun được biên dịch độc lập bằng trình biên dịch Microsoft C++ trong môi trường Visual Studio 2022, sử dụng chuẩn C++17.
+
+Hai tệp kiểm thử được xây dựng:
+
+- `tests/test_best_fit.cpp`: Kiểm tra thuật toán lựa chọn vùng nhớ và cập nhật trạng thái RAM.
+- `tests/test_trace.cpp`: Kiểm tra thông tin hiển thị khi cấp phát thành công và thất bại.
+
+### 10.2. Kết quả kiểm thử
+
+| Mã kiểm thử | Nội dung | Kết quả |
+|---|---|---|
+| TC01 | Lựa chọn vùng trống nhỏ nhất đủ đáp ứng yêu cầu | PASS |
+| TC02 | Ưu tiên địa chỉ bắt đầu nhỏ nhất khi các vùng bằng kích thước | PASS |
+| TC03 | Cấp phát khi dung lượng yêu cầu bằng kích thước vùng trống | PASS |
+| TC04 | Cấp phát thất bại khi không có vùng liên tục đủ lớn | PASS |
+| TC05 | Từ chối yêu cầu cấp phát có dung lượng không hợp lệ | PASS |
+| TC06 | Cấp phát nhiều tiến trình liên tiếp | PASS |
+| TC07 | Kiểm tra thông tin hiển thị khi cấp phát thành công | PASS |
+| TC08 | Kiểm tra thông báo hiển thị khi thất bại do phân mảnh ngoài | PASS |
+
+**Tổng kết:** 8/8 trường hợp kiểm thử độc lập đã thực hiện đều đạt kết quả PASS.
+
+Kết quả này xác nhận các chức năng đáp ứng những trường hợp đã kiểm thử. Việc kiểm thử tích hợp với mô-đun quản lý RAM và giao diện Console của nhóm vẫn cần được thực hiện sau khi ghép chương trình.
+
+## 11. Các nội dung cần phối hợp khi tích hợp
+
+Để bảo đảm thuật toán Best Fit hoạt động chính xác trong hệ thống chung, cần thống nhất:
+
+- Trách nhiệm cập nhật trạng thái RAM giữa `best_fit.cpp` và `memory.cpp`, tránh xử lý trùng một yêu cầu cấp phát.
+- Cách quản lý bản ghi vùng trống khi dung lượng còn lại bằng 0.
+- Cách gọi chức năng hiển thị từ giao diện Console của TV5.
+- Cấu hình biên dịch các tệp `best_fit.cpp` và `trace.cpp` do TV1 phụ trách.
+
+## 12. Kế hoạch kiểm tra chéo thuật toán Worst Fit
+
+Sau khi TV4 hoàn thành và bàn giao `worst_fit.cpp`, tiến hành kiểm tra chéo theo các nội dung:
+
+1. Kiểm tra thuật toán có lựa chọn vùng trống lớn nhất đủ đáp ứng yêu cầu hay không.
+2. Kiểm tra quy tắc ưu tiên địa chỉ bắt đầu nhỏ nhất khi nhiều vùng lớn nhất có cùng kích thước.
+3. Kiểm tra việc cập nhật địa chỉ bắt đầu và dung lượng vùng trống sau cấp phát.
+4. Kiểm tra kết quả cấp phát thất bại khi không có vùng trống liên tục đủ lớn.
+5. Ghi nhận các trường hợp kiểm thử, kết quả thực tế và lỗi phát hiện nếu có.
+
+**Trạng thái:** Chưa thực hiện kiểm tra chéo do chưa nhận được mã nguồn Worst Fit của TV4.
 ## Tài liệu tham khảo
 - Abraham Silberschatz, Peter B. Galvin, Greg Gagne, *Operating System Concepts*, 10th edition, Chapter 9 – Main Memory, mục 9.2.2 (trang 358–359), mục 9.2.3 (trang 359–360), và *Programming Projects – Contiguous Memory Allocation* (trang P-48 đến P-50).
 - Quy ước triển khai được TV1 thông báo ngày 22/10/2026 về `Hole`, ưu tiên `startKB` và cập nhật vùng trống sau cấp phát.
