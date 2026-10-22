@@ -147,3 +147,22 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+# Visual Studio temporary files
+.vs/
+**/.vs/
+**/x64/
+**/Debug/
+**/Release/
+**/ipch/
+*.ipch
+*.suo
+*.VC.db
+*.VC.db-shm
+*.VC.db-wal
+*.VC.opendb
+*.user
+*.tlog
+*.obj
+*.pdb
+*.ilk
+*.exe
