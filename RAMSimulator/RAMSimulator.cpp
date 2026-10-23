@@ -4,7 +4,7 @@
 
 #include "include/models.hpp"
 #include "include/allocators.hpp"
-
+#include "include/input.hpp"
 // CV01 - TV5: Hien thi menu chinh
 void showMenu()
 {
@@ -23,12 +23,24 @@ void showMenu()
 }
 
 // CV01 - TV5: Xu ly lua chon tren menu
-void handleChoice(const std::string& choice)
+void handleChoice(
+    const std::string& choice,
+    MemoryState& initialMemory,
+    std::vector<Request>& requests)
 {
     if (choice == "1")
     {
         std::cout << "\n[Nhap du lieu RAM va tien trinh]\n";
-        std::cout << "Chuc nang se duoc lap trinh trong CV02.\n";
+
+        if (inputData(initialMemory, requests))
+        {
+            std::cout << "\nNhap du lieu thanh cong!\n";
+            displayInputData(initialMemory, requests);
+        }
+        else
+        {
+            std::cout << "\nQua trinh nhap bi ket thuc.\n";
+        }
     }
     else if (choice == "2")
     {
@@ -67,6 +79,9 @@ int main()
 {
     std::string choice;
 
+    MemoryState initialMemory;
+    std::vector<Request> requests;
+
     while (true)
     {
         showMenu();
@@ -82,7 +97,7 @@ int main()
             break;
         }
 
-        handleChoice(choice);
+        handleChoice(choice, initialMemory, requests);
 
         std::cout << "\nNhan Enter de quay lai menu...";
 
