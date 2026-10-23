@@ -6,6 +6,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <algorithm>
 
 namespace {
 
@@ -204,11 +205,24 @@ bool inputData(
             Request{pid, requiredKB});
     }
 
+    
+    // Sap xep RAM theo dia chi bat dau tang dan
+    // Giu nguyen ID cua tung vung RAM
+    std::sort(
+        newMemory.begin(),
+        newMemory.end(),
+        [](const Hole& a, const Hole& b)
+        {
+            return a.startKB < b.startKB;
+        }
+    );
+
     // Chi cap nhat du lieu khi nhap thanh cong
     initialMemory = newMemory;
     requests = newRequests;
 
     return true;
+
 }
 
 // CV02 - Hien thi du lieu da nhap
