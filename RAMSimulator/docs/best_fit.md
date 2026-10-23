@@ -282,7 +282,11 @@ Sau khi TV4 hoàn thành và bàn giao `worst_fit.cpp`, tiến hành kiểm tra 
 4. Kiểm tra kết quả cấp phát thất bại khi không có vùng trống liên tục đủ lớn.
 5. Ghi nhận các trường hợp kiểm thử, kết quả thực tế và lỗi phát hiện nếu có.
 
-**Trạng thái:** Chưa thực hiện kiểm tra chéo do chưa nhận được mã nguồn Worst Fit của TV4.
+**Trạng thái: Đã hoàn thành kiểm tra chéo Worst Fit ngày 23/10/2026.**
+
+TV3 đã biên dịch và chạy lại 9 bài kiểm thử Worst Fit bằng MSVC C++17, kết quả 9/9 PASS. Đã kiểm tra nguyên tắc lựa chọn vùng RAM trống lớn nhất, quy tắc ưu tiên `startKB` nhỏ nhất và việc sử dụng `allocateFromHole()` của TV1. Chưa phát hiện lỗi trong phạm vi kiểm tra chéo.
+
+Kết quả đã được ghi nhận tại Pull Request #7.
 
 ## Tài liệu tham khảo
 - Abraham Silberschatz, Peter B. Galvin, Greg Gagne, *Operating System Concepts*, 10th edition, Chapter 9 – Main Memory, mục 9.2.2 (trang 358–359), mục 9.2.3 (trang 359–360), và *Programming Projects – Contiguous Memory Allocation* (trang P-48 đến P-50).
