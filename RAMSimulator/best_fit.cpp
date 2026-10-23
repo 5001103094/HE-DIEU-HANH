@@ -1,5 +1,6 @@
 
 #include "include/allocators.hpp"
+#include "include/memory.hpp"
 #include <cstddef>
 
 // CV02 - Thuat toan Best Fit - TV3
@@ -12,7 +13,7 @@ AllocationResult bestFit(
 
     // Buoc 1: Kiem tra yeu cau cap phat
     if (request.pid.empty() || request.requiredKB <= 0) {
-        result.reason = "Yeu cau cap phat khong hop le";
+        result.reason = allocationFailureReason(memory, request);
         return result;
     }
 
@@ -40,22 +41,10 @@ AllocationResult bestFit(
 
     // Buoc 4: Khong tim thay vung phu hop
     if (bestIndex == memory.size()) {
-        result.reason = "Khong co vung RAM trong du lon";
+        result.reason = allocationFailureReason(memory, request);
         return result;
     }
 
-    // Buoc 5: Lay vung nho duoc chon
-    Hole& selected = memory[bestIndex];
-
-    result.success = true;
-    result.holeId = selected.id;
-
-    // Buoc 6: Cap phat tu dau vung nho
-    selected.startKB += request.requiredKB;
-    selected.freeKB -= request.requiredKB;
-
-    // Buoc 7: Ghi nhan dung luong con lai
-    result.remainingKB = selected.freeKB;
-
-    return result;
+    // Buoc 5: Goi ham cap phat chung cua TV1
+    return allocateFromHole(memory, bestIndex, request);
 }
