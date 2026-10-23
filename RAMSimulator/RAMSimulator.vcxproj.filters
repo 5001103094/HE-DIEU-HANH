@@ -18,12 +18,18 @@
     <ClCompile Include="RAMSimulator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\models.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\allocators.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
