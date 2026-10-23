@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <algorithm>
+#include <regex>
 
 namespace {
 
@@ -47,10 +48,13 @@ bool readInteger(
 }
 
 // Nhap ma tien trinh va kiem tra trung lap
+
 bool readPid(
     const std::set<std::string>& usedPid,
     std::string& result)
 {
+    static const std::regex pattern(R"(^P[1-9][0-9]*$)");
+
     std::string line;
 
     while (true)
@@ -60,26 +64,28 @@ bool readPid(
         if (!std::getline(std::cin, line))
             return false;
 
-        std::istringstream stream(line);
-        std::string pid;
-        std::string extra;
-
-        if (!(stream >> pid) || (stream >> extra))
+        // Kiem tra dinh dang P1, P2, P3,...
+        if (!std::regex_match(line, pattern))
         {
-            std::cout << "Ma tien trinh khong hop le.\n";
+            std::cout
+                << "Ma tien trinh khong hop le. "
+                << "Vui long nhap dung dinh dang P1, P2, P3,...\n";
         }
-        else if (usedPid.count(pid) != 0)
+        // Kiem tra trung ma tien trinh
+        else if (usedPid.count(line) != 0)
         {
-            std::cout << "Ma tien trinh da ton tai. "
-                      << "Hay nhap ma khac.\n";
+            std::cout
+                << "Ma tien trinh da ton tai. "
+                << "Hay nhap ma khac.\n";
         }
         else
         {
-            result = pid;
+            result = line;
             return true;
         }
     }
 }
+
 
 // Kiem tra cac vung RAM co chong lan khong
 bool overlapsExisting(
