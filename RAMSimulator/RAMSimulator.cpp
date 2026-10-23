@@ -1,21 +1,96 @@
-// RAMSimulator.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
 
 #include <iostream>
+#include <string>
+
 #include "include/models.hpp"
 #include "include/allocators.hpp"
-int main()
+
+// CV01 - TV5: Hien thi menu chinh
+void showMenu()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "\n========================================\n";
+    std::cout << "       MO PHONG CAP PHAT RAM\n";
+    std::cout << "========================================\n";
+    std::cout << "1. Nhap du lieu RAM va tien trinh\n";
+    std::cout << "2. Chay thuat toan First Fit\n";
+    std::cout << "3. Chay thuat toan Best Fit\n";
+    std::cout << "4. Chay thuat toan Worst Fit\n";
+    std::cout << "5. Chay ca ba thuat toan\n";
+    std::cout << "6. So sanh ket qua cap phat\n";
+    std::cout << "0. Thoat chuong trinh\n";
+    std::cout << "========================================\n";
+    std::cout << "Nhap lua chon: ";
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+// CV01 - TV5: Xu ly lua chon tren menu
+void handleChoice(const std::string& choice)
+{
+    if (choice == "1")
+    {
+        std::cout << "\n[Nhap du lieu RAM va tien trinh]\n";
+        std::cout << "Chuc nang se duoc lap trinh trong CV02.\n";
+    }
+    else if (choice == "2")
+    {
+        std::cout << "\n[First Fit]\n";
+        std::cout << "Chua tich hop thuat toan.\n";
+    }
+    else if (choice == "3")
+    {
+        std::cout << "\n[Best Fit]\n";
+        std::cout << "Chua tich hop thuat toan.\n";
+    }
+    else if (choice == "4")
+    {
+        std::cout << "\n[Worst Fit]\n";
+        std::cout << "Chua tich hop thuat toan.\n";
+    }
+    else if (choice == "5")
+    {
+        std::cout << "\n[Chay ca ba thuat toan]\n";
+        std::cout << "Chua tich hop cac thuat toan.\n";
+    }
+    else if (choice == "6")
+    {
+        std::cout << "\n[So sanh ket qua]\n";
+        std::cout << "Chuc nang se duoc tich hop sau.\n";
+    }
+    else
+    {
+        std::cout << "\nLua chon khong hop le!\n";
+        std::cout << "Vui long nhap so tu 0 den 6.\n";
+    }
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+// CV01 - TV5: Dieu khien chuong trinh
+int main()
+{
+    std::string choice;
+
+    while (true)
+    {
+        showMenu();
+
+        if (!std::getline(std::cin, choice))
+        {
+            break;
+        }
+
+        if (choice == "0")
+        {
+            std::cout << "\nKet thuc chuong trinh.\n";
+            break;
+        }
+
+        handleChoice(choice);
+
+        std::cout << "\nNhan Enter de quay lai menu...";
+
+        if (!std::getline(std::cin, choice))
+        {
+            break;
+        }
+    }
+
+    return 0;
+}
