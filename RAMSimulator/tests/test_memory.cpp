@@ -71,6 +71,54 @@ int main()
 
     std::cout << "TEST 7: PASS\n";
 
+    // Test 8: Tong RAM khong du
+    MemoryState tooSmall = { {1, 0, 50}, {2, 100, 70} };
+    Request p4 = { "P4", 150 };
+
+    assert(allocationFailureReason(tooSmall, p4) ==
+        "Khong du tong dung luong RAM trong.");
+
+    std::cout << "TEST 8: PASS\n";
+
+    // Test 9: Dung luong cap phat bang 0
+    int oldStart = memory[0].startKB;
+    int oldFree = memory[0].freeKB;
+
+    AllocationResult zeroSize =
+        allocateFromHole(memory, 0, { "P0", 0 });
+
+    assert(!zeroSize.success);
+    assert(memory[0].startKB == oldStart);
+    assert(memory[0].freeKB == oldFree);
+
+    std::cout << "TEST 9: PASS\n";
+
+    // Test 10: Dung luong am va ma tien trinh rong
+    assert(!allocateFromHole(memory, 0, { "P5", -10 }).success);
+    assert(!allocateFromHole(memory, 0, { "", 10 }).success);
+
+    std::cout << "TEST 10: PASS\n";
+
+    // Test 11: Chi so vung RAM khong ton tai
+    AllocationResult badHole =
+        allocateFromHole(memory, memory.size(), { "P6", 20 });
+
+    assert(!badHole.success);
+    assert(badHole.reason == "Vung RAM khong ton tai.");
+
+    std::cout << "TEST 11: PASS\n";
+
+    // Test 12: Vung RAM duoc chon khong du
+    AllocationResult insufficientHole =
+        allocateFromHole(memory, 0, { "P7", 200 });
+
+    assert(!insufficientHole.success);
+    assert(insufficientHole.reason == "Vung RAM khong du dung luong.");
+    assert(memory[0].startKB == oldStart);
+    assert(memory[0].freeKB == oldFree);
+
+    std::cout << "TEST 12: PASS\n";
+
     std::cout << "\nHOAN THANH KIEM THU MEMORY!\n";
 
     return 0;
