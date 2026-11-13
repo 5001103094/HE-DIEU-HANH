@@ -166,3 +166,22 @@ vite.config.ts.timestamp-*
 *.pdb
 *.ilk
 *.exe
+
+# RAMSimulator - CMake Qt
+/RAMSimulator/ket_qua_bien_dich/
+/RAMSimulator/ket_qua_bien_dich_*/
+/RAMSimulator/build/
+/RAMSimulator/build-*/
+/RAMSimulator/cmake-build-/
+
+# Tep bien dich do CMake, Qt sinh ra
+**/CMakeFiles/
+**/CMakeCache.txt
+**/cmake_install.cmake
+**/CTestTestfile.cmake
+**/*_autogen/
+**/compile_commands.json
+
+# Sao luu giao dien tren may ca nhan
+/RAMSimulator/giao_dien/cua_so_chinh_sao_luu*.txt
+/RAMSimulator/giao_dien/cua_so_chinh_truoc_*.txt

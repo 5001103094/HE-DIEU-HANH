@@ -68,3 +68,27 @@ Một yêu cầu thất bại do phân mảnh ngoài khi tổng RAM trống vẫ
 Chương trình cần được kiểm thử bằng bộ test case TC01–TC08 trước khi nghiệm thu.
 
 Kết quả biên dịch và kiểm thử cuối cùng phải được xác nhận trên Visual Studio 2022 của nhóm.
+
+<!-- RAMSIMULATOR_DA_NEN_TANG_V3 -->
+
+## Phiên bản C++17 và Dashboard Qt6
+
+Phiên bản mới bổ sung:
+
+- First Fit, Best Fit, Worst Fit bằng C++17.
+- Dashboard Qt6 bằng tiếng Việt.
+- Sơ đồ RAM logic và bảng kết quả cấp phát.
+- Thu thập dữ liệu RAM, tiến trình từ hệ điều hành.
+- So sánh ba thuật toán.
+- Bảy bộ kiểm thử tự động.
+
+**Tài liệu liên quan:**
+
+- [Hướng dẫn chạy đa nền tảng](docs/HUONG_DAN_CHAY_DA_NEN_TANG.md)
+- [Kết quả kiểm thử macOS](docs/KET_QUA_KIEM_THU_MACOS.md)
+
+Trạng thái hiện tại: đã kiểm thử thành công trên macOS;
+Windows và Linux chờ kiểm thử trên máy tương ứng.
+
+Phần dữ liệu hệ thống là dữ liệu đọc thực tế;
+phần cấp phát RAM là mô phỏng logic.
